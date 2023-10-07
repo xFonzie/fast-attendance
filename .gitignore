@@ -126,7 +126,5 @@ dmypy.json
 cython_debug/
 
 .idea/
-
-# Saved loaclly images
-
+data/
 saved_images/*
