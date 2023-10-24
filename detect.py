@@ -5,9 +5,11 @@ For more info, see docs of these functions.
 """
 import numpy as np
 import cv2
+import io
+from typing import Union
 
-__author__ = 'Zener085'
-__version__ = '1.0'
+__author__ = "Zener085"
+__version__ = "1.1"
 
 TRAINED_MODEL_PATH = "data/trained"
 TRAINED_MODEL_NAME = "frontalface_alt2.xml"
@@ -31,7 +33,7 @@ def get_photo(__photo_lib: str, __filename: str) -> np.ndarray:
     return cv2.imread(__photo_lib + "/" + __filename)
 
 
-def detect_faces(__image: np.ndarray) -> list[np.ndarray]:
+def detect_faces(__image: Union[np.ndarray, io.BytesIO]) -> list[np.ndarray]:
     """
     Detects faces in an image.
 
@@ -42,6 +44,10 @@ def detect_faces(__image: np.ndarray) -> list[np.ndarray]:
         A list of images within faces.
     """
     global face_detector, MIN_NEIGHBORS, SCALE_FACTOR
+
+    if isinstance(__image, io.BytesIO):
+        bytes_data = __image.getvalue()
+        __image = cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR)
 
     _gray = cv2.cvtColor(__image, cv2.COLOR_BGR2GRAY)
     _faces = face_detector.detectMultiScale(_gray, SCALE_FACTOR, MIN_NEIGHBORS)
