@@ -30,7 +30,7 @@ def get_photo(__photo_lib: str, __filename: str) -> np.ndarray:
     Returns:
         Array of values representing the pixels of photo.
     """
-    return cv2.imread(__photo_lib + "/" + __filename)
+    return cv2.cvtColor(cv2.imread(__photo_lib + "/" + __filename), cv2.COLOR_BGR2RGB)
 
 
 def detect_faces(__image: Union[np.ndarray, io.BytesIO]) -> list[np.ndarray]:
@@ -54,6 +54,8 @@ def detect_faces(__image: Union[np.ndarray, io.BytesIO]) -> list[np.ndarray]:
     _images = []
 
     for (x, y, w, h) in _faces:
-        _images.append(__image[x:x + w, y:y + h, :])
+        face = __image[x:x + w, y:y + h]
+        if 0 not in face.shape:
+            _images.append(face)
 
     return _images
