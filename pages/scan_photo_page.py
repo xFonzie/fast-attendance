@@ -35,11 +35,11 @@ if inp:
     st.image(inp)
     # -------------
 
-    array = convert_jpg_to_numpy(inp)
-    faces = detect_faces(array)
+    # array = convert_jpg_to_numpy(inp)
+    faces = detect_faces(inp)
     print(len(faces))
     for img in faces:
         st.image(img)
         # im = Image.fromarray(img)
         # im.save("your_file.jpeg")
-    pass
+    inp = None
