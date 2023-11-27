@@ -1,5 +1,9 @@
 import streamlit as st
 import re
+import os
+from uuid import uuid4
+from detect_v2 import detect
+from PIL import Image
 
 class Error(Exception):
     pass
@@ -17,7 +21,7 @@ email = email_container.text_input(
 
 image_container = st.container()
 image = image_container.camera_input(
-    "Scan the face of the person",
+    "Scan the face of the person from multiple angles",
 )
 picture = image_container.file_uploader("Or upload jpg file here",
                            type=['jpg'],
@@ -34,9 +38,13 @@ if email:
 
 if image:
     if email:
-        bytes_data = image.getvalue()
-        with open(f'saved_images/{email}.jpg', 'wb') as file:
-            file.write(bytes_data)
+        detected = detect(image)
+        st.image(detected)
+        top_conf = detected[0].astype('uint8')
+        if not os.path.exists(f'verification_data/{email}'):
+            os.mkdir(f'verification_data/{email}')
+        im = Image.fromarray(top_conf)
+        im.save(f"verification_data/{email}/{uuid4()}.jpg")
     else:
         email_container.write(Error("Enter email above!"))
 

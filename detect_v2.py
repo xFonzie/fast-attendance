@@ -1,7 +1,7 @@
 from facenet_pytorch import MTCNN
 from PIL import Image
 
-mtcnn = MTCNN(margin=50, keep_all=True, post_process=False)
+mtcnn = MTCNN(image_size=250, margin=120, keep_all=True, post_process=False)
 
 def detect(img_file_buffer):
     img = Image.open(img_file_buffer)

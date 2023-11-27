@@ -5,7 +5,23 @@ import torch.nn.functional as F
 from torchvision import transforms
 import os
 import numpy as np
+import urllib
 
+
+#############################
+# The best model is stored in releases in our GitHub repo
+
+MODEL_URL = 'https://github.com/Zener085/fast-attendance/releases/download/model/best_model.pt'
+MODEL_PATH = 'recognition_model.pt'
+
+############################
+
+def load_model():
+    if not os.path.exists(MODEL_PATH):
+        urllib.request.urlretrieve(MODEL_URL, MODEL_PATH) 
+    model = SiameseNetwork() 
+    model.load_state_dict(torch.load(MODEL_PATH, map_location='cpu')) 
+    return model
 
 class SiameseNetwork(nn.Module):
     def __init__(self):
@@ -38,12 +54,12 @@ class SiameseNetwork(nn.Module):
         output = self.fc2(torch.abs(output1 - output2))
         return F.sigmoid(output)
 
-model = SiameseNetwork()
+model = load_model()
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(device)
 
-best_model = SiameseNetwork()
-best_model.load_state_dict(torch.load('models/best_model.pt'))
+best_model = model
 best_model.to(device)
 
 transform = transforms.Compose([
@@ -52,6 +68,7 @@ transform = transforms.Compose([
 ])
 
 def preprocess(image):
+    image = image.astype(np.uint8)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     image = cv2.resize(image, (250, 250))
     image = transform(image)
@@ -69,7 +86,6 @@ def verify(image, dir):
             
             output = best_model(image, img)
             results.append(output.item())
-    print(dir, results)
     return np.mean(results)
 
 def recognize(image):

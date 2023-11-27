@@ -3,15 +3,10 @@ from detect import get_photo, detect_faces
 import cv2
 import numpy as np
 from PIL import Image
+from detect_v2 import detect
+from siamese_network import recognize
 
 
-# TODO:
-# - Remove this ↓ and make it in detect.py
-def convert_jpg_to_numpy(image_buffer):
-    img = Image.open(image_buffer)
-    img = np.array(img)
-    st.write(img.shape)
-    return img
 
 image_container = st.container()
 image = image_container.camera_input(
@@ -31,15 +26,12 @@ if picture:
     inp = picture
 
 if inp:
-    # Remove after debugging
-    st.image(inp)
-    # -------------
-
     # array = convert_jpg_to_numpy(inp)
-    faces = detect_faces(inp)
-    print(len(faces))
+    faces = detect(inp)
+    recognized_names = []
     for img in faces:
-        st.image(img)
-        # im = Image.fromarray(img)
-        # im.save("your_file.jpeg")
-    inp = None
+        with st.container():
+            st.image(img)
+            recognized_names.append(recognize(img))
+            st.write(recognized_names[-1])
+    # st.write(recognized_names)

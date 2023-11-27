@@ -48,7 +48,7 @@ def detect_faces(__image: Union[np.ndarray, io.BytesIO]) -> list[np.ndarray]:
 
     if isinstance(__image, io.BytesIO):
         bytes_data = __image.getvalue()
-        __image = cv2.cvtColor(cv2.imdecode(np.frombuffer(bytes_data, np.uint64), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
+        __image = cv2.cvtColor(cv2.imdecode(np.frombuffer(bytes_data, np.uint8), cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB)
 
     _gray = cv2.cvtColor(__image, cv2.COLOR_BGR2GRAY)
     _faces = __face_detector.detectMultiScale(_gray, __SCALE_FACTOR, __MIN_NEIGHBORS)
