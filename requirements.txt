@@ -10,5 +10,3 @@ streamlit
 st-pages
 pandas
 ffmpeg
-libsm6
-libxext6  
