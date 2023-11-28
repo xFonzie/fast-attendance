@@ -5,7 +5,13 @@ import numpy as np
 from PIL import Image
 from detect_v2 import detect
 from siamese_network import recognize
+import pandas as pd
 
+
+@st.cache_data
+def convert_df(df):
+    # IMPORTANT: Cache the conversion to prevent computation on every rerun
+    return df.to_csv().encode('utf-8')
 
 
 image_container = st.container()
@@ -32,6 +38,21 @@ if inp:
     for img in faces:
         with st.container():
             st.image(img)
-            recognized_names.append(recognize(img))
+            result = recognize(img)
+            best_match, best_prob = '', 0
+            for k, v in result.items():
+                if best_prob < v and 0.6 < v:
+                    best_match = k
+                    best_prob = v
+            if best_prob > 0:
+                recognized_names.append(best_match)
             st.write(recognized_names[-1])
-    # st.write(recognized_names)
+    df = pd.DataFrame(recognized_names)
+    csv = convert_df(df)
+    st.download_button(
+        label="Download CSV",
+        data=csv,
+        file_name="attendance.csv",
+        mime='text/csv'
+    )
+    
