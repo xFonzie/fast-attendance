@@ -1,0 +1,9 @@
+matplotlib
+numpy
+tqdm
+uuid
+opencv
+facenet-pytorch
+torch
+torchvision
+streamlit
