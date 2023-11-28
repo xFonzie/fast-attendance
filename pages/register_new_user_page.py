@@ -41,6 +41,8 @@ if image:
         detected = detect(image)
         st.image(detected)
         top_conf = detected[0].astype('uint8')
+        if not os.path.exists(f'verification_data'):
+            os.mkdir(f'verification_data')
         if not os.path.exists(f'verification_data/{email}'):
             os.mkdir(f'verification_data/{email}')
         im = Image.fromarray(top_conf)
