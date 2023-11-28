@@ -2,7 +2,7 @@ matplotlib
 numpy
 tqdm
 uuid
-opencv-python
+opencv-python==4.8.1.78
 facenet-pytorch
 torch
 torchvision
