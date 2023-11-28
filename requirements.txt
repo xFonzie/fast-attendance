@@ -7,3 +7,5 @@ facenet-pytorch
 torch
 torchvision
 streamlit
+st_pages
+pandas
