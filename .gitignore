@@ -128,3 +128,5 @@ cython_debug/
 .idea/
 data/
 saved_images/*
+verification_data/*
+recognition_model.pt
