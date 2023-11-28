@@ -1,5 +1,4 @@
 import streamlit as st
-from detect import get_photo, detect_faces
 import cv2
 import numpy as np
 from PIL import Image
