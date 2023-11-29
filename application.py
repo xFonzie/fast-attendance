@@ -5,6 +5,8 @@ add_page_title("Home page")
 
 sl.write("""
 This is a project made in Innopolis University for increase and accurate a speed of checking attendance!
+
+GitHub: https://github.com/Zener085/fast-attendance
 """)
 
 show_pages(
