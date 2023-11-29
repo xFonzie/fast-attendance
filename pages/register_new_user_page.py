@@ -52,8 +52,14 @@ if image:
 
 if picture:
     if email:
-        bytes_data = picture.getvalue()
-        with open(f'saved_images/{email}.jpg', 'wb') as file:
-            file.write(bytes_data)
+        detected = detect(picture)
+        st.image(detected)
+        top_conf = detected[0].astype('uint8')
+        if not os.path.exists(f'verification_data'):
+            os.mkdir(f'verification_data')
+        if not os.path.exists(f'verification_data/{email}'):
+            os.mkdir(f'verification_data/{email}')
+        im = Image.fromarray(top_conf)
+        im.save(f"verification_data/{email}/{uuid4()}.jpg")
     else:
         email_container.write(Error("Enter email above!"))
