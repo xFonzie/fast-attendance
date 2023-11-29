@@ -40,7 +40,7 @@ if inp:
             result = recognize(img)
             best_match, best_prob = '', 0
             for k, v in result.items():
-                if best_prob < v and 0.6 < v:
+                if best_prob < v and 0.6 < v and k not in recognized_names:
                     best_match = k
                     best_prob = v
             if best_prob > 0:
